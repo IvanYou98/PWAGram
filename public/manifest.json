@@ -3,39 +3,39 @@
   "short_name": "PWAGram",
   "icons": [
     {
-      "src": "/src/images/app-icon-48x48.png",
+      "src": "/src/images/icons/app-icon-48x48.png",
       "type": "image/png",
-      "size": "48x48"
+      "sizes": "48x48"
     },
     {
-      "src": "/src/images/app-icon-96x96.png",
+      "src": "/src/images/icons/app-icon-96x96.png",
       "type": "image/png",
-      "size": "96x96"
+      "sizes": "96x96"
     },
     {
-      "src": "/src/images/app-icon-144x144.png",
+      "src": "/src/images/icons/app-icon-144x144.png",
       "type": "image/png",
-      "size": "144x144"
+      "sizes": "144x144"
     },
     {
-      "src": "/src/images/app-icon-192x192.png",
+      "src": "/src/images/icons/app-icon-192x192.png",
       "type": "image/png",
-      "size": "192x192"
+      "sizes": "192x192"
     },
     {
-      "src": "/src/images/app-icon-256x256.png",
+      "src": "/src/images/icons/app-icon-256x256.png",
       "type": "image/png",
-      "size": "256x256"
+      "sizes": "256x256"
     },
     {
-      "src": "/src/images/app-icon-384x384.png",
+      "src": "/src/images/icons/app-icon-384x384.png",
       "type": "image/png",
-      "size": "384x384"
+      "sizes": "384x384"
     },
     {
-      "src": "/src/images/app-icon-512x512.png",
+      "src": "/src/images/icons/app-icon-512x512.png",
       "type": "image/png",
-      "size": "512x512"
+      "sizes": "512x512"
     }
   ],
   "start_url": "/index.html",
