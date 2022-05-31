@@ -1,5 +1,4 @@
 // check the availability
-console.log("hello from app.js")
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
         .register('/sw.js')
@@ -7,3 +6,10 @@ if ('serviceWorker' in navigator) {
             console.log("Service worker registers!")
         });
 }
+
+// window.addEventListener('beforeinstallprompt', (event) => {
+//     console.log('before instll prompt fired');
+//     event.preventDefault();
+//     deferredPrompt = event;
+//     return false;
+// })
