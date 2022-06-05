@@ -25,34 +25,50 @@ shareImageButton.addEventListener('click', openCreatePostModal);
 
 closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 
-function createCard() {
+function createCard(post) {
     var cardWrapper = document.createElement('div');
     cardWrapper.className = 'shared-moment-card mdl-card mdl-shadow--2dp';
     var cardTitle = document.createElement('div');
     cardTitle.className = 'mdl-card__title';
-    cardTitle.style.backgroundImage = 'url("/src/images/sf-boat.jpg")';
+    cardTitle.style.backgroundImage = 'url('+ post.image +')';
     cardTitle.style.backgroundSize = 'cover';
     cardTitle.style.height = '180px';
     cardWrapper.appendChild(cardTitle);
     var cardTitleTextElement = document.createElement('h2');
     cardTitleTextElement.className = 'mdl-card__title-text';
-    cardTitleTextElement.textContent = 'San Francisco Trip';
+    cardTitleTextElement.textContent = post.title;
     cardTitleTextElement.style.color = 'white';
     cardTitle.appendChild(cardTitleTextElement);
     var cardSupportingText = document.createElement('div');
     cardSupportingText.className = 'mdl-card__supporting-text';
-    cardSupportingText.textContent = 'In San Francisco';
+    cardSupportingText.textContent = post.location;
     cardSupportingText.style.textAlign = 'center';
     cardWrapper.appendChild(cardSupportingText);
     componentHandler.upgradeElement(cardWrapper);
     sharedMomentsArea.appendChild(cardWrapper);
 }
 
-fetch('https://httpbin.org/get')
+
+const updateUI = posts => {
+    for (let i = 0; i < posts.length.length; i++) {
+        createCard(posts[i]);
+    }
+}
+
+let url = 'https://pwabackend-a5bf7-default-rtdb.firebaseio.com/posts.json';
+
+
+fetch(url)
     .then(function(res) {
         return res.json();
     })
     .then(function(data) {
-        console.log('create the card')
-        createCard();
+        console.log('creating the cards');
+        let posts = [];
+        for (let key in data) {
+            posts.push(data[key]);
+        }
+        console.log(posts);
+        createCard(posts[0]);
+        createCard(posts[1]);
     });

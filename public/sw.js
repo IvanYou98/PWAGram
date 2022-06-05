@@ -1,5 +1,5 @@
-const LATEST_STATIC_CACHE = 'static-v6'
-const LATEST_DYNAMIC_CACHE = 'dynamic'
+const LATEST_STATIC_CACHE = 'static-v3'
+const LATEST_DYNAMIC_CACHE = 'dynamic-v3'
 
 self.addEventListener('install', function (event) {
     console.log('[Service Worker] Installing Service Worker ...', event);
@@ -16,7 +16,9 @@ self.addEventListener('install', function (event) {
                     '/index.html',
                     '/src/css/app.css',
                     '/src/css/feed.css',
-                    '/src/images/main-image.jpg'
+                    '/src/images/main-image.jpg',
+                    'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2',
+                    'https://fonts.gstatic.com/s/materialicons/v129/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2'
                 ])
             })
     )
@@ -43,7 +45,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(request).then(matchResult => {
             // check if we have a valid matchResult
-            if (matchResult) return matchResult
+            if (matchResult) return matchResult;
             fetch(request).then(res => {
                 caches.open(LATEST_DYNAMIC_CACHE).then(cache => {
                     cache.put(request.url, res.clone());
