@@ -1,4 +1,4 @@
-const LATEST_STATIC_CACHE = 'static-v19'
+const LATEST_STATIC_CACHE = 'static-v1'
 const LATEST_DYNAMIC_CACHE = 'dynamic-v3'
 
 self.addEventListener('install', function (event) {
