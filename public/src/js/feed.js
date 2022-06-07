@@ -69,6 +69,7 @@ fetch(url)
             posts.push(data[key]);
         }
         console.log(posts);
-        createCard(posts[0]);
-        createCard(posts[1]);
+        for (let i = 0; i < posts.length; i++) {
+            createCard(posts[i])
+        }
     });

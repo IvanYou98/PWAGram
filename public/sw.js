@@ -1,4 +1,4 @@
-const LATEST_STATIC_CACHE = 'static-v3'
+const LATEST_STATIC_CACHE = 'static-v19'
 const LATEST_DYNAMIC_CACHE = 'dynamic-v3'
 
 self.addEventListener('install', function (event) {
@@ -17,6 +17,7 @@ self.addEventListener('install', function (event) {
                     '/src/css/app.css',
                     '/src/css/feed.css',
                     '/src/images/main-image.jpg',
+                    '/src/js/material.min.js',
                     'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2',
                     'https://fonts.gstatic.com/s/materialicons/v129/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2'
                 ])
