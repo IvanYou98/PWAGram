@@ -1,5 +1,5 @@
-var deferredPrompt;
 let enableNotificationsBttons = document.querySelectorAll('.enable-notifications')
+
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker

@@ -1,3 +1,5 @@
+importScripts('/src/js/idb.js');
+
 const LATEST_STATIC_CACHE = 'static-v1'
 const LATEST_DYNAMIC_CACHE = 'dynamic-v3'
 
@@ -10,6 +12,7 @@ self.addEventListener('install', function (event) {
                 cache.addAll([
                     '/',
                     '/src/js/app.js',
+                    '/src/js/idb.js',
                     '/src/js/feed.js',
                     '/src/js/fetch.js',
                     '/src/js/promise.js',
@@ -42,19 +45,62 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('fetch', event => {
-    const request = event.request;
     event.respondWith(
-        caches.match(request).then(matchResult => {
-            // check if we have a valid matchResult
-            if (matchResult) return matchResult;
-            fetch(request).then(res => {
-                caches.open(LATEST_DYNAMIC_CACHE).then(cache => {
-                    cache.put(request.url, res.clone());
-                    return res;
-                })
-            }).catch(err => {
-                console.log(err);
+        caches.open(LATEST_DYNAMIC_CACHE)
+            .then(cache => {
+                return fetch(event.request)
+                    .then(response => {
+                        cache.put(event.request, response.clone());
+                        return response;
+                    })
+                    .catch(err => {
+                        return caches.match(event.request);
+                    })
             })
-        })
-    );
+    )
 })
+
+
+// self.addEventListener('fetch', function(event) {
+//     event.respondWith(
+//         caches.open(LATEST_DYNAMIC_CACHE)
+//             .then(function(cache) {
+//                 return fetch(event.request)
+//                     .then(function(res) {
+//                         cache.put(event.request, res.clone());
+//                         return res;
+//                     });
+//             })
+//     );
+// });
+
+// self.addEventListener('fetch', event => {
+//     const request = event.request;
+//     event.respondWith(
+//         fetch(request).then(response => {
+//             caches.open(LATEST_DYNAMIC_CACHE).then(cache => {
+//                 cache.put(request.url, response.clone());
+//                 return response;
+//             })
+//         }).catch(err => {
+//             console.log(err);
+//         })
+//         // caches.match(request).then(matchResult => {
+//         //     // check if we have a valid matchResult
+//         //     // if (matchResult) return matchResult;
+//         //     // fetch(request).then(response => {
+//         //     //     return response;
+//         //     // }).catch(err => {
+//         //     //     console.log(err);
+//         //     // })
+//         //     fetch(request).then(res => {
+//         //         caches.open(LATEST_DYNAMIC_CACHE).then(cache => {
+//         //             cache.put(request.url, res.clone());
+//         //             return res;
+//         //         })
+//         //     }).catch(err => {
+//         //         console.log(err);
+//         //     })
+//         // })
+//     );
+// })

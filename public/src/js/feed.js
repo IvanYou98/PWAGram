@@ -14,7 +14,8 @@ let locationLoader = document.querySelector('#location-loader');
 let fetchedLocation;
 
 locationBtn.addEventListener('click', event => {
-    if (! ('geolocation' in navigator)) {
+    console.log('location btn is clicked!')
+    if (!('geolocation' in navigator)) {
         locationLoader.style.display = 'none';
     }
     locationBtn.style.display = 'none';
@@ -37,7 +38,7 @@ locationBtn.addEventListener('click', event => {
 })
 
 const initializeLocation = () => {
-    if (! ('geolocation' in navigator)) {
+    if (!('geolocation' in navigator)) {
         locationLoader.style.display = 'none';
     }
 }
@@ -68,13 +69,13 @@ const initializeMedia = () => {
 }
 
 captureButton.addEventListener('click', event => {
-   canvasElement.style.display = 'block';
-   videoPlayer.style.display = 'none';
-   captureButton.style.display = 'none';
-   let context = canvasElement.getContext('2d');
-   context.drawImage(videoPlayer, 0, 0, canvasElement.width, canvasElement.width *   videoPlayer.videoHeight / (videoPlayer.videoWidth));
-   videoPlayer.srcObject.getVideoTracks().forEach(track => track.stop());
-   picture = dataURItoBlob(canvasElement.toDataURL());
+    canvasElement.style.display = 'block';
+    videoPlayer.style.display = 'none';
+    captureButton.style.display = 'none';
+    let context = canvasElement.getContext('2d');
+    context.drawImage(videoPlayer, 0, 0, canvasElement.width, canvasElement.width * videoPlayer.videoHeight / (videoPlayer.videoWidth));
+    videoPlayer.srcObject.getVideoTracks().forEach(track => track.stop());
+    picture = dataURItoBlob(canvasElement.toDataURL());
 
 });
 
@@ -130,28 +131,50 @@ function createCard(post) {
     sharedMomentsArea.appendChild(cardWrapper);
 }
 
+const clearCards = () => {
+    while (sharedMomentsArea.hasChildNodes()) {
+        sharedMomentsArea.removeChild(sharedMomentsArea.lastChild)
+    }
+}
 
-const updateUI = posts => {
-    for (let i = 0; i < posts.length.length; i++) {
-        createCard(posts[i]);
+const createCards = data => {
+    let posts = [];
+    for (let key in data) {
+        posts.push(data[key]);
+    }
+    for (let i = 0; i < posts.length; i++) {
+        createCard(posts[i])
     }
 }
 
 let url = 'https://pwabackend-a5bf7-default-rtdb.firebaseio.com/posts.json';
 
+let networkDataReceived = false;
 
-fetch(url)
-    .then(function (res) {
-        return res.json();
+if ('caches' in window) {
+    caches.match(url)
+        .then(result => {
+            if (result) {
+                return result.json();
+            } else {
+                return null;
+            }
+        }).then(data => {
+        if (data && !networkDataReceived) {
+            clearCards();
+            console.log('cache data:', data);
+            createCards(data)
+            console.log('created by caches!')
+        }
     })
-    .then(function (data) {
-        console.log('creating the cards');
-        let posts = [];
-        for (let key in data) {
-            posts.push(data[key]);
-        }
-        console.log(posts);
-        for (let i = 0; i < posts.length; i++) {
-            createCard(posts[i])
-        }
-    });
+}
+
+fetch(url).then(response => {
+        networkDataReceived = true;
+        return response.json();
+    }
+).then(data => {
+    clearCards();
+    createCards(data);
+    console.log('created by network!')
+})
