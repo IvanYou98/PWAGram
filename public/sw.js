@@ -45,62 +45,39 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.open(LATEST_DYNAMIC_CACHE)
-            .then(cache => {
-                return fetch(event.request)
-                    .then(response => {
-                        cache.put(event.request, response.clone());
-                        return response;
-                    })
-                    .catch(err => {
-                        return caches.match(event.request);
-                    })
-            })
-    )
+    const url = 'https://pwabackend-a5bf7-default-rtdb.firebaseio.com/posts.json';
+    // if we are reaching to the backend
+    if (event.request.url.indexOf(url) == 0) {
+        event.respondWith(
+            caches.open(LATEST_DYNAMIC_CACHE)
+                .then(cache => {
+                    return fetch(event.request)
+                        .then(response => {
+                            cache.put(event.request, response.clone());
+                            return response;
+                        })
+                        .catch(err => {
+                            return caches.match(event.request);
+                        })
+                })
+        )
+    } else {
+        event.respondWith(
+            caches.match(event.request).then(
+                matchResult => {
+                    console.log('Find something in the cache...')
+                    if (matchResult) return matchResult;
+                    return fetch(event.request).then(
+                        response => {
+                            caches.open(LATEST_DYNAMIC_CACHE).then(cache => {
+                                cache.put(event.request.url, response.clone());
+                                return response;
+                            })
+                        }
+                    )
+                }
+            )
+        )
+    }
+
 })
-
-
-// self.addEventListener('fetch', function(event) {
-//     event.respondWith(
-//         caches.open(LATEST_DYNAMIC_CACHE)
-//             .then(function(cache) {
-//                 return fetch(event.request)
-//                     .then(function(res) {
-//                         cache.put(event.request, res.clone());
-//                         return res;
-//                     });
-//             })
-//     );
-// });
-
-// self.addEventListener('fetch', event => {
-//     const request = event.request;
-//     event.respondWith(
-//         fetch(request).then(response => {
-//             caches.open(LATEST_DYNAMIC_CACHE).then(cache => {
-//                 cache.put(request.url, response.clone());
-//                 return response;
-//             })
-//         }).catch(err => {
-//             console.log(err);
-//         })
-//         // caches.match(request).then(matchResult => {
-//         //     // check if we have a valid matchResult
-//         //     // if (matchResult) return matchResult;
-//         //     // fetch(request).then(response => {
-//         //     //     return response;
-//         //     // }).catch(err => {
-//         //     //     console.log(err);
-//         //     // })
-//         //     fetch(request).then(res => {
-//         //         caches.open(LATEST_DYNAMIC_CACHE).then(cache => {
-//         //             cache.put(request.url, res.clone());
-//         //             return res;
-//         //         })
-//         //     }).catch(err => {
-//         //         console.log(err);
-//         //     })
-//         // })
-//     );
-// })
