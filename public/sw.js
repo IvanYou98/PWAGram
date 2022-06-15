@@ -114,62 +114,6 @@ self.addEventListener('fetch', function (event) {
     }
 });
 
-// self.addEventListener('fetch', function(event) {
-//   event.respondWith(
-//     caches.match(event.request)
-//       .then(function(response) {
-//         if (response) {
-//           return response;
-//         } else {
-//           return fetch(event.request)
-//             .then(function(res) {
-//               return caches.open(CACHE_DYNAMIC_NAME)
-//                 .then(function(cache) {
-//                   cache.put(event.request.url, res.clone());
-//                   return res;
-//                 })
-//             })
-//             .catch(function(err) {
-//               return caches.open(CACHE_STATIC_NAME)
-//                 .then(function(cache) {
-//                   return cache.match('/offline.html');
-//                 });
-//             });
-//         }
-//       })
-//   );
-// });
-
-// self.addEventListener('fetch', function(event) {
-//   event.respondWith(
-//     fetch(event.request)
-//       .then(function(res) {
-//         return caches.open(CACHE_DYNAMIC_NAME)
-//                 .then(function(cache) {
-//                   cache.put(event.request.url, res.clone());
-//                   return res;
-//                 })
-//       })
-//       .catch(function(err) {
-//         return caches.match(event.request);
-//       })
-//   );
-// });
-
-// Cache-only
-// self.addEventListener('fetch', function (event) {
-//   event.respondWith(
-//     caches.match(event.request)
-//   );
-// });
-
-// Network-only
-// self.addEventListener('fetch', function (event) {
-//   event.respondWith(
-//     fetch(event.request)
-//   );
-// });
-
 self.addEventListener('sync', function(event) {
     console.log('[Service Worker] Background syncing', event);
     if (event.tag === 'sync-new-posts') {
@@ -188,7 +132,7 @@ self.addEventListener('sync', function(event) {
                                 id: dt.id,
                                 title: dt.title,
                                 location: dt.location,
-                                image: 'https://firebasestorage.googleapis.com/v0/b/pwabackend-a5bf7.appspot.com/o/arches.JPG?alt=media&token=1443560a-11d8-4edf-9fb5-3ab6eba7e358'
+                                image: 'https://firebasestorage.googleapis.com/v0/b/pwabackend-a5bf7.appspot.com/o/purple_sky.JPG?alt=media&token=6fd4701d-491a-4845-ac84-e152f09e8a01'
                             })
                         })
                             .then(function(res) {
